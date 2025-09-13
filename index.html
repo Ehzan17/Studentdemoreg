@@ -22,25 +22,33 @@
     <p id="response"></p>
   </form>
 
-  <script>
-    const scriptURL = "https://script.google.com/macros/s/AKfycbwc1YIAe5vEbpL6oxS-swgfgFkcE9-YseMtr6ZX-z9IEz2t25_CCLaVKEeaq72yO9P9/exec"; // paste your Apps Script Web App URL here
+ <script>
+  const scriptURL = "https://script.google.com/macros/s/AKfycbynjGhrXlq9NOqxuD-WV4VYeXI56JcJPBavBfFzAP4rhIOijCFKIKfQwUQLs1JoEuzd/exec";
 
-    document.getElementById("studentForm").addEventListener("submit", e => {
-      e.preventDefault();
-      const formData = {
-        name: e.target.name.value,
-        email: e.target.email.value,
-        phone: e.target.phone.value
-      };
+  document.getElementById("studentForm").addEventListener("submit", e => {
+    e.preventDefault();
 
-      fetch(scriptURL, {
-        method: "POST",
-        body: JSON.stringify(formData),
-        headers: { "Content-Type": "application/json" }
-      })
-      .then(res => document.getElementById("response").innerText = "✅ Registered Successfully!")
-      .catch(err => document.getElementById("response").innerText = "❌ Error: " + err);
-    });
-  </script>
+    const formData = {
+      name: e.target.name.value,
+      email: e.target.email.value,
+      phone: e.target.phone.value
+    };
+
+    fetch(scriptURL, {
+      method: "POST",
+      body: JSON.stringify(formData),
+      headers: { "Content-Type": "application/json" }
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.status === "success") {
+        document.getElementById("response").innerText = "✅ Registered Successfully!";
+      } else {
+        document.getElementById("response").innerText = "❌ Error: " + data.message;
+      }
+    })
+    .catch(err => document.getElementById("response").innerText = "❌ Fetch Failed: " + err);
+  });
+</script>
 </body>
 </html>
