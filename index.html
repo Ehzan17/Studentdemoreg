@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Registration</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f4f4f9; display: flex; justify-content: center; align-items: center; height: 100vh; }
+    form { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); width: 300px; }
+    input, button { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; }
+    button { background: #4CAF50; color: white; cursor: pointer; border: none; }
+    button:hover { background: #45a049; }
+  </style>
+</head>
+<body>
+  <form id="studentForm">
+    <h2>Student Registration</h2>
+    <input type="text" name="name" placeholder="Full Name" required>
+    <input type="email" name="email" placeholder="Email" required>
+    <input type="tel" name="phone" placeholder="Phone" required>
+    <button type="submit">Register</button>
+    <p id="response"></p>
+  </form>
+
+  <script>
+    const scriptURL = "https://script.google.com/macros/s/AKfycbwc1YIAe5vEbpL6oxS-swgfgFkcE9-YseMtr6ZX-z9IEz2t25_CCLaVKEeaq72yO9P9/exec"; // paste your Apps Script Web App URL here
+
+    document.getElementById("studentForm").addEventListener("submit", e => {
+      e.preventDefault();
+      const formData = {
+        name: e.target.name.value,
+        email: e.target.email.value,
+        phone: e.target.phone.value
+      };
+
+      fetch(scriptURL, {
+        method: "POST",
+        body: JSON.stringify(formData),
+        headers: { "Content-Type": "application/json" }
+      })
+      .then(res => document.getElementById("response").innerText = "✅ Registered Successfully!")
+      .catch(err => document.getElementById("response").innerText = "❌ Error: " + err);
+    });
+  </script>
+</body>
+</html>
